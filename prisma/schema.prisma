@@ -1,0 +1,84 @@
+enum UserType {
+  USER
+  ADMIN
+}
+
+enum ReportPeriod {
+  DAILY
+  MONTHLY
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type      UserType
+  Client    Client?
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  fullName  String
+  contact   String
+  address   String
+  status    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Order     Order?
+}
+
+model Product {
+  id              Int        @id @default(autoincrement())
+  name            String
+  description     String
+  price           Decimal    @db.Decimal(10, 2)
+  quantityInStock Int
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  OrderItem       OrderItem?
+}
+
+model Order {
+  id          Int        @id @default(autoincrement())
+  clientId    Int        @unique
+  client      Client     @relation(fields: [clientId], references: [id])
+  status      String
+  orderDate   DateTime   @default(now())
+  totalAmount Decimal    @db.Decimal(10, 2)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  OrderItem   OrderItem?
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int     @unique
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+  subtotal  Decimal @db.Decimal(10, 2)
+}
+
+model SalesReport {
+  id           Int          @id @default(autoincrement())
+  period       ReportPeriod
+  totalSales   Decimal      @db.Decimal(10, 2)
+  productsSold Int
+  filePath     String       @unique
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
