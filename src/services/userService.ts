@@ -1,6 +1,7 @@
 import { PrismaClient, User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
+
 const prisma = new PrismaClient();
 
 enum UserType {
@@ -8,6 +9,14 @@ enum UserType {
     ADMIN = 'ADMIN'
 }
 
+
+/**
+ * @typedef {Object} CreateUserInput
+ * @property {string} name - The name of the user
+ * @property {string} email - The email of the user
+ * @property {string} password - The password of the user
+ * @property {string} type - The type of the user (USER or ADMIN)
+ */
 interface CreateUserInput {
     name: string;
     email: string;
@@ -31,6 +40,14 @@ class UserService {
     return Object.values(UserType).includes(type);
     }
 
+
+/**
+     * Creates a new user.
+     * 
+     * @param {CreateUserInput} userData - The user data to create.
+     * @returns {Promise<User>} The created user.
+     * @throws {Error} If there is an error creating the user.
+     */
     async createUser(userData: CreateUserInput): Promise<User> {
         try {
             // Hash the password before storing it in the database
@@ -65,6 +82,14 @@ class UserService {
         }
     }
 
+/**
+     * Updates an existing user.
+     * 
+     * @param {number} id - The ID of the user to update.
+     * @param {object} userData - The updated user data.
+     * @returns {Promise<User>} The updated user.
+     * @throws {Error} If there is an error updating the user.
+     */
     async updateUser(id: number, userData: any): Promise<any> {
         try {
             // Update the user using Prisma
@@ -83,9 +108,16 @@ class UserService {
         }
     }
 
+/**
+     * Deletes a user by ID.
+     * 
+     * @param {number} id - The ID of the user to delete.
+     * @returns {Promise<void>} A promise that resolves once the user is deleted.
+     * @throws {Error} If there is an error deleting the user.
+     */
     async deleteUser(id: number): Promise<void> {
         try {
-            // Delete the user using Prisma
+            
             await prisma.user.delete({
                 where: { id },
             });
@@ -95,6 +127,13 @@ class UserService {
         }
     }
 
+        /**
+     * Retrieves a user by ID.
+     * 
+     * @param {number} id - The ID of the user to retrieve.
+     * @returns {Promise<User>} The retrieved user.
+     * @throws {Error} If there is an error retrieving the user.
+     */
     async getUserById(id: number): Promise<any> {
         try {
             console.log('fetching');
