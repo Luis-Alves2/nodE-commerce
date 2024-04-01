@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import orderService from '../services/orderService';
 
+import { createOrderSchema, updateOrderSchema } from '../middleware/validation/ordervalidation'
+
 class OrderController {
   async getAllOrders(req: Request, res: Response) {
     try {
@@ -26,6 +28,7 @@ class OrderController {
   async createOrder(req: Request, res: Response) {
     const data = req.body;
     try {
+      await createOrderSchema.validate(data);
       const newOrder = await orderService.createOrder(data);
       res.status(201).json(newOrder);
     } catch (error) {
@@ -38,6 +41,7 @@ class OrderController {
     const orderId = parseInt(req.params.id);
     const data = req.body;
     try {
+      await updateOrderSchema.validate(data);
       const updatedOrder = await orderService.updateOrder(orderId, data);
       res.json(updatedOrder);
     } catch (error) {

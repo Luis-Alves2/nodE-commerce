@@ -2,6 +2,17 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client'; // Import PrismaClient from Prisma
 import dotenv from 'dotenv'; // Import dotenv
 
+import productRoutes from './routes/productRoutes';
+import orderRoutes from './routes/orderRoutes';
+import orderItemRoutes from './routes/orderitemRoutes';
+import clientRoutes from './routes/clientRoutes';
+import userRoutes from './routes/userRoutes';
+
+import loginRoutes from './routes/loginRoutes';
+import { authenticate, authorize } from './middleware/auth';
+
+const bodyParser = require('body-parser');
+
 dotenv.config();
 
 const app: express.Application = express();
@@ -18,25 +29,28 @@ const startServer = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    // ... Your error handling middleware goes here
-
-    // Import and mount your routes
-    //const authRoutes = require('./routes/authRoutes');
-    //const productRoutes = require('./routes/productRoutes');
-    // ... Add routes for other functionalities
-
-    // Mount routes on the app with a base path (optional)
-    //app.use('/api', authRoutes);
-    //app.use('/api/products', productRoutes);
-    // ... Add route prefixes for other functionalities
+    app.use(bodyParser.json());
+    app.use('/api', loginRoutes);
+    //app.use('*', authenticate,authorize);
+    app.use('/api', authenticate,authorize,productRoutes);
+    app.use('/api', authenticate,authorize,orderRoutes);
+    app.use('/api', authenticate,authorize,orderItemRoutes);
+    app.use('/api', authenticate,authorize,clientRoutes);
+    app.use('/api', authenticate,authorize,userRoutes);
 
     // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
+    const server = app.listen(PORT, () => {
+      const address = server.address();
+      console.log(address)
+      if (typeof address === 'string') {
+          console.log(`Server running at ${address}`);
+      } else {
+          console.log(address)
+          //console.log(`Server running at http://${address.address}:${address.port}`);
+      }
     });
   } catch (error) {
     console.error('Error starting the server:', error);
-    // Consider a more robust error handling approach here (e.g., logging)
   }
 };
 

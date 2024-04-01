@@ -60,6 +60,7 @@ class UserService {
               }
 
         } catch (error) {
+            console.error('Error creating user:', error);
             throw new Error('Error creating user');
         }
     }
@@ -72,13 +73,13 @@ class UserService {
                 data: {
                     name: userData.name,
                     email: userData.email,
-                    // Other user properties to update
                 }
             });
 
             return updatedUser;
         } catch (error) {
-            throw new Error('Error updating user');
+            console.error('Error creating user:', error);
+            throw new Error('Error creating user');
         }
     }
 
@@ -89,24 +90,24 @@ class UserService {
                 where: { id },
             });
         } catch (error) {
-            throw new Error('Error deleting user');
+            console.error('Error creating user:', error);
+            throw new Error('Error creating user');
         }
     }
 
     async getUserById(id: number): Promise<any> {
         try {
-            // Fetch the user by ID using Prisma
+            console.log('fetching');
             const user = await prisma.user.findUnique({
                 where: { id },
             });
 
             return user;
         } catch (error) {
-            throw new Error('Error fetching user');
+            console.error('Error creating user:', error);
+            throw new Error('Error creating user');
         }
     }
-
-    // Other methods for fetching, updating, and deleting users using Prisma
 }
 
 export default new UserService();

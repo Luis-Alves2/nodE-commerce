@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import orderItemService from '../services/orderitemService';
 
+import { createOrderItemSchema, updateOrderItemSchema } from '../middleware/validation/orderitemvalidation'
+
 class OrderItemController {
   async getAllOrderItems(req: Request, res: Response) {
     try {
@@ -8,7 +10,7 @@ class OrderItemController {
       res.json(orderItems);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
@@ -19,18 +21,19 @@ class OrderItemController {
       res.json(orderItem);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
   async createOrderItem(req: Request, res: Response) {
     const data = req.body;
     try {
+      await createOrderItemSchema.validate(data);
       const newOrderItem = await orderItemService.createOrderItem(data);
       res.status(201).json(newOrderItem);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
@@ -38,11 +41,12 @@ class OrderItemController {
     const orderItemId = parseInt(req.params.id);
     const data = req.body;
     try {
+      await updateOrderItemSchema.validate(data);
       const updatedOrderItem = await orderItemService.updateOrderItem(orderItemId, data);
       res.json(updatedOrderItem);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
@@ -53,7 +57,7 @@ class OrderItemController {
       res.status(204).end();
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 }

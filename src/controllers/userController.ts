@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 import UserService from '../services/userService';
 
+import { createUserSchema, updateUserSchema } from '../middleware/validation/uservalidation'
+
 class UserController {
     async createUser(req: Request, res: Response) {
         try {
             const userData = req.body;
+            await createUserSchema.validate(userData);
             const newUser = await UserService.createUser(userData);
             res.status(201).json(newUser);
         } catch (error) {
@@ -33,6 +36,7 @@ class UserController {
         try {
             const userId = parseInt(req.params.id); // Convert to number
             const userData = req.body;
+            await updateUserSchema.validate(userData);
             const updatedUser = await UserService.updateUser(userId, userData);
             if (!updatedUser) {
                 res.status(404).json({ message: 'User not found' });

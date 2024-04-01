@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import productService from '../services/productService';
 
+import { createProductSchema, updateProductSchema } from '../middleware/validation/productvalidation'
+
+
 class ProductController {
   async getAllProducts(req: Request, res: Response) {
     try {
@@ -8,7 +11,7 @@ class ProductController {
       res.json(products);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
@@ -19,18 +22,19 @@ class ProductController {
       res.json(product);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
   async createProduct(req: Request, res: Response) {
     const data = req.body;
     try {
+      await createProductSchema.validate(data);
       const newProduct = await productService.createProduct(data);
       res.status(201).json(newProduct);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
@@ -38,11 +42,12 @@ class ProductController {
     const productId = parseInt(req.params.id);
     const data = req.body;
     try {
+      await updateProductSchema.validate(data);
       const updatedProduct = await productService.updateProduct(productId, data);
       res.json(updatedProduct);
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 
@@ -53,7 +58,7 @@ class ProductController {
       res.status(204).end();
     } catch (error) {
         const errorMessage = (error as Error).message;
-        res.status(500).json({ message: errorMessage });
+        res.status(400).json({ message: errorMessage });
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import clientService from '../services/clientService';
+import { createClientSchema, updateClientSchema } from '../middleware/validation/clientvalidation'
 
 class ClientController {
   async getAllClients(req: Request, res: Response) {
@@ -26,6 +27,7 @@ class ClientController {
   async createClient(req: Request, res: Response) {
     const data = req.body;
     try {
+      await createClientSchema.validate(data);  
       const newClient = await clientService.createClient(data);
       res.status(201).json(newClient);
     } catch (error) {
@@ -38,6 +40,7 @@ class ClientController {
     const clientId = parseInt(req.params.id);
     const data = req.body;
     try {
+      await updateClientSchema.validate(data);
       const updatedClient = await clientService.updateClient(clientId, data);
       res.json(updatedClient);
     } catch (error) {

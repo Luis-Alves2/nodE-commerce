@@ -1,12 +1,12 @@
 import express from 'express';
 import UserController from '../controllers/userController';
 
-const router = express.Router();
+const userRoutes = express.Router();
 
 // Define routes for user-related endpoints
-router.post('/users', UserController.createUser);
-router.get('/users/:id', UserController.getUserById);
-router.put('/users/:id', UserController.updateUser);
-router.delete('/users/:id', UserController.deleteUser);
+userRoutes.post('/users', UserController.createUser);
+userRoutes.get('/users/:id', UserController.getUserById);
+userRoutes.put('/users/:id', UserController.updateUser);
+userRoutes.delete('/users/:id', UserController.deleteUser);
 
-export default router;
+export default userRoutes;
