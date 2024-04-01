@@ -60,6 +60,22 @@ class OrderController {
         res.status(400).json({ message: errorMessage });
     }
   }
+
+  async searchOrders(req: Request, res: Response){
+    try {
+      const { query } = req.query;
+  
+      if (!query) {
+        return res.status(400).json({ error: 'Search query is required' });
+      }
+  
+      const orders = await orderService.searchOrders(query.toString());
+      res.json(orders);
+    } catch (error) {
+      console.error('Error searching orders:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 }
 
 export default new OrderController();

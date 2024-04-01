@@ -26,6 +26,24 @@ class ProductController {
     }
   }
 
+  async searchProducts (req: Request, res: Response){
+    try {
+      const { query } = req.query;
+  
+      if (!query) {
+        return res.status(400).json({ error: 'Search query is required' });
+      }
+  
+      // Call the searchProducts method from the ProductService
+      const products = await productService.searchProducts(query.toString()); // Assuming query is a string
+  
+      res.json(products);
+    } catch (error) {
+      console.error('Error searching products:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   async createProduct(req: Request, res: Response) {
     const data = req.body;
     try {

@@ -29,6 +29,16 @@ class OrderService {
       where: { id: orderId },
     });
   }
+
+  async searchOrders(query: string) {
+    return await prisma.order.findMany({
+      where: {
+        OR: [
+          { id: parseInt(query) },
+        ],
+      },
+    });
+  }
 }
 
 export default new OrderService();

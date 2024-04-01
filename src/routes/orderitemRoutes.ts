@@ -9,4 +9,6 @@ orderItemRoutes.post('/orderItems', orderItemController.createOrderItem);
 orderItemRoutes.put('/orderItems/:id', orderItemController.updateOrderItem);
 orderItemRoutes.delete('/orderItems/:id', orderItemController.deleteOrderItem);
 
+orderItemRoutes.get('/orderItems/search', orderItemController.searchOrderItems);
+
 export default orderItemRoutes;

@@ -29,6 +29,17 @@ class ProductService {
       where: { id: productId },
     });
   }
+
+  async searchProducts(query: string) {
+    return await prisma.product.findMany({
+      where: {
+        OR: [
+          { name: { contains: query, mode: 'insensitive' } }, // Case-insensitive search
+          { description: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+    });
+  }
 }
 
 export default new ProductService();
