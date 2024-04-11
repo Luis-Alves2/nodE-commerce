@@ -17,13 +17,17 @@ const swaggerDefinition = {
     ],
 };
 
+// Log the list of files in dist/routes
+console.log('Files:', fs.readdirSync('../routes'));
+
 const options = {
     swaggerDefinition,
-    apis: ['./src/routes/productRoutes.ts','./src/routes/clientRoutes.ts','./src/routes/userRoutes.ts','./src/routes/orderRoutes.ts','./src/routes/orderitemRoutes.ts'], // Path to the API routes files
+    apis: ['../routes/*.js'], // Path to the API routes files
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 fs.writeFileSync('./swagger.json', JSON.stringify(swaggerSpec, null, 2));
 
-export default swaggerSpec;
+//export default swaggerSpec;
+

@@ -13,8 +13,8 @@ import { authenticate, authorize } from './middleware/auth';
 
 
 const bodyParser = require('body-parser');
-//import swaggerUi from 'swagger-ui-express';
-//const swaggerSpec = require('./swaggerConfig.js') as any;
+import swaggerUi from 'swagger-ui-express';
+const swaggerSpec = require('./docs/swagger.json') as any;
 
 
 dotenv.config();
@@ -31,7 +31,7 @@ const startServer = async () => {
     console.log('Database connection successful');
 
     // Serve Swagger UI
-    //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
