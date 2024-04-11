@@ -108,6 +108,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*.ts", "rbac.d.ts", "swaggerConfig.js", "swagger.d.ts"], // Include TypeScript source files in the src directory and its subdirectories
+  "include": ["src/**/*.ts", "rbac.d.ts", "src/docs/swaggerConfig.js", "swagger.d.ts"], // Include TypeScript source files in the src directory and its subdirectories
   "exclude": ["node_modules"] // Exclude the node_modules directory from compilation
 }

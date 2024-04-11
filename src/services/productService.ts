@@ -34,7 +34,7 @@ class ProductService {
     return await prisma.product.findMany({
       where: {
         OR: [
-          { name: { contains: query, mode: 'insensitive' } }, // Case-insensitive search
+          { name: { contains: query, mode: 'insensitive' } },
           { description: { contains: query, mode: 'insensitive' } },
         ],
       },
