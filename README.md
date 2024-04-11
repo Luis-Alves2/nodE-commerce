@@ -44,18 +44,6 @@ This is a RESTful API for a simplified e-commerce management system, built with 
    node index.js
    ```
 
-## API Documentation
-
-The API documentation is available in the [Swagger](https://swagger.io/) format. Once the server is running, access the Swagger documentation at `http://localhost:3000/api-docs`.
-
-## Testing
-
-Unit tests are implemented using [Jest](https://jestjs.io/) framework. Run tests with:
-
-```bash
-npm test
-```
-
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request with any improvements or bug fixes.
